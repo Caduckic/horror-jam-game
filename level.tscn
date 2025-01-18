@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3 uid="uid://bbsjpi06nut4a"]
+
+[ext_resource type="Script" path="res://level.gd" id="1_j0ej6"]
+[ext_resource type="PackedScene" uid="uid://fomv3layac0v" path="res://floor.tscn" id="1_phx4r"]
+[ext_resource type="PackedScene" uid="uid://bcxhg1nirrqyq" path="res://desktop.tscn" id="1_u810e"]
+[ext_resource type="PackedScene" uid="uid://c5xmb32ec6iia" path="res://player.tscn" id="2_inuf2"]
+[ext_resource type="Script" path="res://spot_light_3d.gd" id="4_hwyjj"]
+[ext_resource type="AudioStream" uid="uid://cg4qs66canc2u" path="res://sounds/light-flicker.wav" id="5_uth07"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kj71f"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_vyud8"]
+sky_material = SubResource("ProceduralSkyMaterial_kj71f")
+
+[sub_resource type="Environment" id="Environment_xbjfh"]
+background_mode = 1
+sky = SubResource("Sky_vyud8")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.05
+tonemap_mode = 2
+fog_mode = 1
+fog_density = 1.0
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_j0ej6")
+
+[node name="Desktop" parent="." instance=ExtResource("1_u810e")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_xbjfh")
+
+[node name="Floor" parent="." instance=ExtResource("1_phx4r")]
+
+[node name="Player" parent="." instance=ExtResource("2_inuf2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14786, 8)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 6, 0)
+layers = 3
+light_color = Color(1, 1, 0.913725, 1)
+shadow_enabled = true
+shadow_bias = 0.07
+shadow_opacity = 0.99
+spot_range = 9.5
+spot_attenuation = 0.5
+spot_angle = 35.0
+script = ExtResource("4_hwyjj")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="SpotLight3D"]
+stream = ExtResource("5_uth07")
+volume_db = -11.531
+pitch_scale = 1.18
+autoplay = true
+bus = &"Flicker"
+playback_type = 1
+
+[editable path="Player"]

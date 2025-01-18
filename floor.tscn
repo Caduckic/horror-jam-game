@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://fomv3layac0v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bpbu0"]
+disable_ambient_light = true
+
+[node name="Floor" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+layers = 2
+use_collision = true
+size = Vector3(40, 0, 40)
+material = SubResource("StandardMaterial3D_bpbu0")
