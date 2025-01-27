@@ -93,6 +93,9 @@ open_flash={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+limits/opengl/max_renderable_lights=64
+limits/opengl/max_lights_per_object=16
+occlusion_culling/use_occlusion_culling=true
 lights_and_shadows/positional_shadow/atlas_quadrant_0_subdiv=4
 lights_and_shadows/positional_shadow/atlas_quadrant_1_subdiv=4
 lights_and_shadows/positional_shadow/atlas_quadrant_2_subdiv=5

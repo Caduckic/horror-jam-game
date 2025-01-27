@@ -28,7 +28,7 @@ var directory_structure : Dictionary = {
 var current_directory_array = []
 
 var unlocked : bool = false
-const password : String = "1234"
+var password : String = "1234"
 
 var powered_on : bool = false
 

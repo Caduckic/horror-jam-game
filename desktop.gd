@@ -13,6 +13,12 @@ func _process(delta: float) -> void:
 	screen_mat.albedo_texture.viewport_path = $ScreenRenderTexture._get_viewport()
 	screen_mat.emission_texture.viewport_path = $ScreenRenderTexture._get_viewport()
 
+func _set_password(password : String):
+	$ScreenRenderTexture.password = password
+	
+func _set_directory_structure(structure : Dictionary):
+	$ScreenRenderTexture.directory_structure = structure
+
 func _turn_on():
 	$Computer/PowerSwitchSound.play()
 	$ScreenRenderTexture/SubViewportContainer/SubViewport/Control/Panel.visible = false

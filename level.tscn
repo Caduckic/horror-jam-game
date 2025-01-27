@@ -72,13 +72,13 @@ visible = false
 script = ExtResource("7_rxkn5")
 
 [node name="Desktop1" parent="DesktopContainer" instance=ExtResource("1_u810e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.84123, -0.500567, -14.0235)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.85264, -0.500567, -14.0235)
 
 [node name="Desktop2" parent="DesktopContainer" instance=ExtResource("1_u810e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.78041, -0.500567, -14.0235)
 
 [node name="Desktop3" parent="DesktopContainer" instance=ExtResource("1_u810e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.85264, -0.500567, -14.0235)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.84123, -0.500567, -14.0235)
 
 [node name="FileDrawer" parent="." instance=ExtResource("9_2lbr5")]
 transform = Transform3D(-1.09994, 0, -0.0111733, 0, 1.1, 0, 0.0111733, 0, -1.09994, 7.47283, -0.501453, -9.36356)
@@ -88,6 +88,7 @@ transform = Transform3D(-1.09994, 0, -0.0111733, 0, 1.1, 0, 0.0111733, 0, -1.099
 
 [node name="Note" parent="." instance=ExtResource("11_h1xxy")]
 transform = Transform3D(-1.09994, 0, -0.0111733, 0, 1.1, 0, 0.0111733, 0, -1.09994, 4.6804, 0.485349, -9.36356)
-text = "You're reading a note lol, cringe. What are you, a nerd?"
+text = "Password for counter computer is 1234.
+Type in help to the console for list of commands"
 
 [editable path="Player"]
