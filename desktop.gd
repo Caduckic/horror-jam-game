@@ -18,6 +18,7 @@ func _turn_on():
 	$ScreenRenderTexture/SubViewportContainer/SubViewport/Control/Panel.visible = false
 	$Computer/ComputerFanSound.play()
 	$ScreenRenderTexture.powered_on = true
+	$Computer/ScreenLight.visible = true
 	
 func _turn_off():
 	$Computer/PowerSwitchSound.play()
@@ -26,9 +27,13 @@ func _turn_off():
 	$ScreenRenderTexture/SubViewportContainer/SubViewport/Control/PanelContainer.visible = true
 	$ScreenRenderTexture.unlocked = false
 	$ScreenRenderTexture.powered_on = false
+	$Computer/ScreenLight.visible = false
 
 func _is_powered_on() -> bool:
 	return $ScreenRenderTexture.powered_on
+	
+func _is_unlocked() -> bool:
+	return $ScreenRenderTexture.unlocked
 
 func _grab_focus():
 	if $ScreenRenderTexture.unlocked:

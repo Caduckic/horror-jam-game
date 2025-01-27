@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=3 uid="uid://cs0bjd5bkm402"]
+
+[ext_resource type="Script" path="res://file_drawer.gd" id="1_q7yhs"]
+[ext_resource type="PackedScene" uid="uid://cltx5fp481ky1" path="res://models/FilingCabinetSingle_Case.fbx" id="2_jqhg2"]
+[ext_resource type="PackedScene" uid="uid://cpk4osd2e62l2" path="res://models/FilingCabinet_DrawerKeyLock.fbx" id="3_53f0h"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_li1ol"]
+size = Vector3(0.364075, 0.367828, 0.551331)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mebuk"]
+size = Vector3(0.318115, 0.337219, 0.393555)
+
+[node name="FileDrawerLocked" type="Node3D"]
+transform = Transform3D(1.1, 0, 0, 0, 1.1, 0, 0, 0, 1.1, 0, 0, 0)
+script = ExtResource("1_q7yhs")
+message = "you need a key"
+is_locked = true
+
+[node name="FilingCabinetSingle_Case" parent="." instance=ExtResource("2_jqhg2")]
+
+[node name="FilingCabinet_Drawer" parent="." instance=ExtResource("3_53f0h")]
+
+[node name="Interaction" type="StaticBody3D" parent="." groups=["Drawer"]]
+collision_layer = 9
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interaction"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000518799, 0.193588, -0.0968323)
+shape = SubResource("BoxShape3D_li1ol")
+
+[node name="OpenCollisionShape" type="CollisionShape3D" parent="Interaction"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.193573, 0.365415)
+shape = SubResource("BoxShape3D_mebuk")
+disabled = true
+
+[node name="ClosedMarker" type="Marker3D" parent="."]
+
+[node name="OpenMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4)

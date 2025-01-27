@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c43r0esbti6gl"
-path.s3tc="res://.godot/imported/wood_3.png-7030e8f2c43405fd8b8f076b56ee9fb6.s3tc.ctex"
+uid="uid://gnrkedr4dnf"
+path.s3tc="res://.godot/imported/LPOP_TextureAtlas1_FULL.png-5bca668033f16e85bf7c642b91d8f727.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://models/wood_3.png"
-dest_files=["res://.godot/imported/wood_3.png-7030e8f2c43405fd8b8f076b56ee9fb6.s3tc.ctex"]
+source_file="res://models/LPOP_TextureAtlas1_FULL.png"
+dest_files=["res://.godot/imported/LPOP_TextureAtlas1_FULL.png-5bca668033f16e85bf7c642b91d8f727.s3tc.ctex"]
 
 [params]
 

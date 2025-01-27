@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://pbhn7rj5qo6m"]
+
+[node name="BookCase" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+use_collision = true
+collision_layer = 17
+size = Vector3(1, 2.5, 5)

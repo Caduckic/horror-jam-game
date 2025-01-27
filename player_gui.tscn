@@ -1,6 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://cwga4d221pxvh"]
+[gd_scene load_steps=5 format=3 uid="uid://cwga4d221pxvh"]
 
 [ext_resource type="Script" path="res://player_gui.gd" id="1_e2bxh"]
+[ext_resource type="Texture2D" uid="uid://bhgpue10y6v35" path="res://textures/Paper Texture.jpg" id="2_ppjoy"]
+
+[sub_resource type="Theme" id="Theme_ep2tv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rkept"]
+bg_color = Color(0.772549, 0.772549, 0.772549, 0.392157)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0768358, 0.0768358, 0.0768358, 1)
+border_blend = true
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
 
 [node name="PlayerGui" type="Control"]
 layout_mode = 3
@@ -11,6 +27,17 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_e2bxh")
+
+[node name="FPS" type="Label" parent="."]
+layout_mode = 0
+offset_right = 54.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.599755, 0.766572, 0.335847, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/outline_size = 5
+text = "FPS: 60"
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 1
@@ -25,4 +52,89 @@ offset_right = 49.5
 offset_bottom = -75.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "Press E to Sit"
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_constants/shadow_outline_size = 7
+text = "press e to sit"
+
+[node name="Note" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = -49.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.45, 0.45)
+
+[node name="TextureRect" type="TextureRect" parent="Note"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -398.0
+offset_top = -512.0
+offset_right = 398.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_ppjoy")
+stretch_mode = 4
+
+[node name="Text" type="Label" parent="Note"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -354.0
+offset_top = -460.0
+offset_right = 355.0
+offset_bottom = 449.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Test text"
+autowrap_mode = 2
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1.5
+offset_top = -1.5
+offset_right = 4.5
+offset_bottom = 4.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+mouse_filter = 2
+theme = SubResource("Theme_ep2tv")
+theme_override_styles/panel = SubResource("StyleBoxFlat_rkept")

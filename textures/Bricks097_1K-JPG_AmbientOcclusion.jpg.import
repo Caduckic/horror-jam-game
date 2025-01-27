@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c43r0esbti6gl"
-path.s3tc="res://.godot/imported/wood_3.png-7030e8f2c43405fd8b8f076b56ee9fb6.s3tc.ctex"
+uid="uid://c6slioau4747g"
+path.s3tc="res://.godot/imported/Bricks097_1K-JPG_AmbientOcclusion.jpg-32320326ce02668548b93c52f42fd610.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://models/wood_3.png"
-dest_files=["res://.godot/imported/wood_3.png-7030e8f2c43405fd8b8f076b56ee9fb6.s3tc.ctex"]
+source_file="res://textures/Bricks097_1K-JPG_AmbientOcclusion.jpg"
+dest_files=["res://.godot/imported/Bricks097_1K-JPG_AmbientOcclusion.jpg-32320326ce02668548b93c52f42fd610.s3tc.ctex"]
 
 [params]
 
@@ -24,8 +24,8 @@ compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=0
-roughness/src_normal=""
+roughness/mode=8
+roughness/src_normal="res://textures/Bricks097_1K-JPG_NormalDX.jpg"
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

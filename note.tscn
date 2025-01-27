@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://bupbl68fow2sl"]
+
+[ext_resource type="Script" path="res://note.gd" id="1_4ycxv"]
+[ext_resource type="Texture2D" uid="uid://0rbe2c6v6xlo" path="res://textures/Paper Texture_text.jpg" id="1_8yipj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6qctd"]
+albedo_texture = ExtResource("1_8yipj")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_at2wn"]
+material = SubResource("StandardMaterial3D_6qctd")
+size = Vector2(0.3, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uccqk"]
+size = Vector3(0.314453, 0.03125, 0.419922)
+
+[node name="Note" type="Node3D"]
+script = ExtResource("1_4ycxv")
+
+[node name="Note" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_at2wn")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." groups=["Note"]]
+collision_layer = 16
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_uccqk")

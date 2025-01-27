@@ -17,6 +17,13 @@ const FOV_CHANGE = 1.5
 var is_sitting = false
 var current_desk = null
 
+var flash_light_active = false
+var moving_flash = false
+
+var has_key = false
+
+var reading_note = false
+
 var footstep_sounds = [
 	preload("res://sounds/foot_steps/Concrete_Trainers_FullStep_01.wav"),
 	preload("res://sounds/foot_steps/Concrete_Trainers_FullStep_02.wav"),
@@ -89,44 +96,93 @@ func _physics_process(delta: float) -> void:
 		else:
 			speed = WALK_SPEED
 
-		_walk(delta)
+		if not reading_note:
+			_walk(delta)
 
-		t_bob += delta * velocity.length() * float(is_on_floor())
-		camera.transform.origin = _headbob(t_bob)
+			t_bob += delta * velocity.length() * float(is_on_floor())
+			camera.transform.origin = _headbob(t_bob)
 
-		_handle_fov(delta)
+			_handle_fov(delta)
+			
+			move_and_slide()
 		
-		move_and_slide()
-		
-		if $Head/Camera3D/RayCast3D.is_colliding():
+		if $Head/Camera3D/RayCast3D.is_colliding() and not reading_note:
 			if $Head/Camera3D/RayCast3D.get_collider().is_in_group("Sitable"):
 				$PlayerGui._set_label("press e to sit")
 				if Input.is_action_just_pressed("interact"):
-					current_desk = $Head/Camera3D/RayCast3D.get_collider().get_parent()
-					position = current_desk.get_node("SitMarker").position
-					var screenDir = (head.position - current_desk.get_node("ScreenMarker").position).normalized()
-					head.look_at(screenDir, Vector3.UP)
-					head.rotation.x = 0
-					head.rotation.z = 0
-					
-					#camera.look_at(screenDir, Vector3.LEFT)
-					camera.rotation = Vector3.ZERO
-					is_sitting = true;
-					if current_desk._is_powered_on():
-						current_desk._grab_focus()
+					_interact_sitable()
+					#current_desk = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+					#position = current_desk.get_node("SitMarker").global_position
+					#head.look_at(current_desk.get_node("ScreenMarker").global_position, Vector3.UP)
+					#head.rotation.x = 0
+					#head.rotation.z = 0
+					#
+					##camera.look_at(screenDir, Vector3.LEFT)
+					#camera.rotation = Vector3.ZERO
+					#is_sitting = true;
+					#if current_desk._is_powered_on():
+						#current_desk._grab_focus()
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Powerable"):
 				$PlayerGui._set_label("press e to toggle power")
 				if Input.is_action_just_pressed("interact"):
-					if $Head/Camera3D/RayCast3D.get_collider().get_parent()._is_powered_on():
-						$Head/Camera3D/RayCast3D.get_collider().get_parent()._turn_off()
-					else:
-						$Head/Camera3D/RayCast3D.get_collider().get_parent()._turn_on()
+					_interact_powerable()
+					#if $Head/Camera3D/RayCast3D.get_collider().get_parent()._is_powered_on():
+						#$Head/Camera3D/RayCast3D.get_collider().get_parent()._turn_off()
+					#else:
+						#$Head/Camera3D/RayCast3D.get_collider().get_parent()._turn_on()
+			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Drawer"):
+				var drawer = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+				if drawer.is_locked:
+					drawer._check_key(has_key)
+				$PlayerGui._set_label(drawer.message)
+				if Input.is_action_just_pressed("interact"):
+					_interact_drawer(drawer)
+					#if drawer.is_locked and has_key:
+						#drawer._unlock()
+					#else:
+						#drawer._toggle_open()
+			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Note"):
+				var note = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+				$PlayerGui._set_label("press e to read")
+				if Input.is_action_just_pressed("interact"):
+					$PlayerGui._read_note(note.text)
+					reading_note = true
+		elif reading_note:
+			$PlayerGui._set_label("press e to drop note")
+			if Input.is_action_just_pressed("interact"):
+				$PlayerGui._close_note()
+				reading_note = false
 		else:
 			$PlayerGui._set_label("")
+			
+		if Input.is_action_just_pressed("open_flash") and not reading_note:
+			if not flash_light_active:
+				$Flashlight2.visible = true
+				flash_light_active = true
+			else:
+				flash_light_active = false
+				$FlashAwayTimer.start()
+		
+		var current_maker
+		if flash_light_active:
+			if $Head/Camera3D/WallRay.is_colliding():
+				current_maker = $Head/Camera3D/LiftMarker
+			else:
+				current_maker = $Head/Camera3D/HoldMarker
+		else:
+			current_maker = $Head/Camera3D/AwayMarker
+		
+		var thres = 0.01
+		if $Flashlight2.global_position.distance_to(current_maker.global_position) > thres:
+			$Flashlight2.global_position = $Flashlight2.global_position.lerp(current_maker.global_position, 20 * delta)
+
+			$Flashlight2.rotation.x = lerp_angle($Flashlight2.rotation.x, current_maker.global_rotation.x, 20 * delta)
+			$Flashlight2.rotation.y = lerp_angle($Flashlight2.rotation.y, current_maker.global_rotation.y, 20 * delta)
+			$Flashlight2.rotation.z = lerp_angle($Flashlight2.rotation.z, current_maker.global_rotation.z, 20 * delta)
 	else:
 		$PlayerGui._set_label("press left shift to stand up")
 		if Input.is_action_just_pressed("sprint"):
-			position = current_desk.get_node("StandMarker").position
+			position = current_desk.get_node("StandMarker").global_position
 			is_sitting = false
 			current_desk._release_focus()
 	
@@ -134,6 +190,31 @@ func _physics_process(delta: float) -> void:
 		_play_step_sound()
 	
 	last_on_floor = is_on_floor()
+
+func _interact_sitable():
+	current_desk = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+	position = current_desk.get_node("SitMarker").global_position
+	head.look_at(current_desk.get_node("ScreenMarker").global_position, Vector3.UP)
+	head.rotation.x = 0
+	head.rotation.z = 0
+	
+	#camera.look_at(screenDir, Vector3.LEFT)
+	camera.rotation = Vector3.ZERO
+	is_sitting = true;
+	if current_desk._is_powered_on():
+		current_desk._grab_focus()
+
+func _interact_powerable():
+	if $Head/Camera3D/RayCast3D.get_collider().get_parent()._is_powered_on():
+		$Head/Camera3D/RayCast3D.get_collider().get_parent()._turn_off()
+	else:
+		$Head/Camera3D/RayCast3D.get_collider().get_parent()._turn_on()
+
+func _interact_drawer(drawer):
+	if drawer.is_locked and has_key:
+		drawer._unlock()
+	else:
+		drawer._toggle_open()
 
 func _headbob(time) -> Vector3:
 	var pos = Vector3.ZERO
@@ -155,3 +236,7 @@ func _play_step_sound():
 	last_footstep_index = next_index
 	$Footsteps.stream = footstep_sounds[next_index]
 	$Footsteps.play()
+
+
+func _on_flash_away_timer_timeout() -> void:
+	$Flashlight2.visible = false

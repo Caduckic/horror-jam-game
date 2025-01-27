@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bbsjpi06nut4a"]
+[gd_scene load_steps=15 format=3 uid="uid://bbsjpi06nut4a"]
 
 [ext_resource type="Script" path="res://level.gd" id="1_j0ej6"]
 [ext_resource type="PackedScene" uid="uid://fomv3layac0v" path="res://floor.tscn" id="1_phx4r"]
@@ -6,6 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://c5xmb32ec6iia" path="res://player.tscn" id="2_inuf2"]
 [ext_resource type="Script" path="res://spot_light_3d.gd" id="4_hwyjj"]
 [ext_resource type="AudioStream" uid="uid://cg4qs66canc2u" path="res://sounds/light-flicker.wav" id="5_uth07"]
+[ext_resource type="Script" path="res://desktop_container.gd" id="7_rxkn5"]
+[ext_resource type="PackedScene" uid="uid://jnry0jvf8nw" path="res://counter_desktop.tscn" id="8_sp807"]
+[ext_resource type="PackedScene" uid="uid://ynb3auwdpkbg" path="res://file_drawer.tscn" id="9_2lbr5"]
+[ext_resource type="PackedScene" uid="uid://cs0bjd5bkm402" path="res://file_drawer_locked.tscn" id="10_k8iqm"]
+[ext_resource type="PackedScene" uid="uid://bupbl68fow2sl" path="res://note.tscn" id="11_h1xxy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kj71f"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -18,16 +23,20 @@ sky_material = SubResource("ProceduralSkyMaterial_kj71f")
 background_mode = 1
 sky = SubResource("Sky_vyud8")
 ambient_light_source = 2
-ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_color = Color(0.147672, 0.147672, 0.147672, 1)
 ambient_light_energy = 0.05
 tonemap_mode = 2
+sdfgi_enabled = true
+glow_enabled = true
+glow_bloom = 0.1
 fog_mode = 1
 fog_density = 1.0
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_j0ej6")
 
-[node name="Desktop" parent="." instance=ExtResource("1_u810e")]
+[node name="CounterDesktop" parent="." instance=ExtResource("8_sp807")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 6.08891, -0.501578, -9.19712)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_xbjfh")
@@ -35,15 +44,14 @@ environment = SubResource("Environment_xbjfh")
 [node name="Floor" parent="." instance=ExtResource("1_phx4r")]
 
 [node name="Player" parent="." instance=ExtResource("2_inuf2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.14786, 8)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.20796, 1.14786, -2)
 
 [node name="SpotLight3D" type="SpotLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 6, 0)
+transform = Transform3D(-1, -8.74228e-08, -3.82137e-15, 0, -4.37114e-08, 1, -8.74228e-08, 1, 4.37114e-08, 5.01858, 5, -9.56404)
 layers = 3
 light_color = Color(1, 1, 0.913725, 1)
 shadow_enabled = true
 shadow_bias = 0.07
-shadow_opacity = 0.99
 spot_range = 9.5
 spot_attenuation = 0.5
 spot_angle = 35.0
@@ -56,5 +64,30 @@ pitch_scale = 1.18
 autoplay = true
 bus = &"Flicker"
 playback_type = 1
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+visible = false
+
+[node name="DesktopContainer" type="Node3D" parent="."]
+script = ExtResource("7_rxkn5")
+
+[node name="Desktop1" parent="DesktopContainer" instance=ExtResource("1_u810e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.84123, -0.500567, -14.0235)
+
+[node name="Desktop2" parent="DesktopContainer" instance=ExtResource("1_u810e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.78041, -0.500567, -14.0235)
+
+[node name="Desktop3" parent="DesktopContainer" instance=ExtResource("1_u810e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.85264, -0.500567, -14.0235)
+
+[node name="FileDrawer" parent="." instance=ExtResource("9_2lbr5")]
+transform = Transform3D(-1.09994, 0, -0.0111733, 0, 1.1, 0, 0.0111733, 0, -1.09994, 7.47283, -0.501453, -9.36356)
+
+[node name="FileDrawerLocked" parent="." instance=ExtResource("10_k8iqm")]
+transform = Transform3D(-1.09994, 0, -0.0111733, 0, 1.1, 0, 0.0111733, 0, -1.09994, 7.47283, -0.0818766, -9.36356)
+
+[node name="Note" parent="." instance=ExtResource("11_h1xxy")]
+transform = Transform3D(-1.09994, 0, -0.0111733, 0, 1.1, 0, 0.0111733, 0, -1.09994, 4.6804, 0.485349, -9.36356)
+text = "You're reading a note lol, cringe. What are you, a nerd?"
 
 [editable path="Player"]

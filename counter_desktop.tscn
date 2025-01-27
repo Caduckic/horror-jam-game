@@ -1,0 +1,124 @@
+[gd_scene load_steps=21 format=3 uid="uid://jnry0jvf8nw"]
+
+[ext_resource type="Script" path="res://desktop.gd" id="1_pbll4"]
+[ext_resource type="ArrayMesh" uid="uid://csh5pxf1730fw" path="res://models/old-computer.obj" id="2_1hje8"]
+[ext_resource type="Texture2D" uid="uid://bwq3c3p0slroo" path="res://models/pc_1X.png" id="3_hnko8"]
+[ext_resource type="Texture2D" uid="uid://wpjeapcinbjl" path="res://models/keyboard_1.png" id="4_jlkyv"]
+[ext_resource type="AudioStream" uid="uid://bbtccqcbfvl2p" path="res://sounds/computer/Office Computer PC Fan Noise Loop.wav" id="5_dchor"]
+[ext_resource type="AudioStream" uid="uid://rqiaekr25i8e" path="res://sounds/computer/error-sound.wav" id="6_evutj"]
+[ext_resource type="AudioStream" uid="uid://tywniulogq6c" path="res://sounds/computer/yay.wav" id="7_aj05u"]
+[ext_resource type="AudioStream" uid="uid://cg7yi743ku2qk" path="res://sounds/computer/power-switch.wav" id="8_oct2c"]
+[ext_resource type="ArrayMesh" uid="uid://gbnycc3g5ff7" path="res://models/Office_Chair_V3.obj" id="9_6ojpo"]
+[ext_resource type="Texture2D" uid="uid://fmgy5xydq4lk" path="res://models/color-palette.png" id="10_thh1q"]
+[ext_resource type="PackedScene" uid="uid://c3poibykmepdb" path="res://screen_render_texture.tscn" id="12_mxqcd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qchsx"]
+size = Vector3(0.612915, 0.782288, 0.828125)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i4q2a"]
+size = Vector3(0.637573, 1.24121, 0.703247)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xdnrh"]
+size = Vector3(0.64624, 1.75494, 0.699005)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xn8i4"]
+transparency = 2
+alpha_scissor_threshold = 0.429
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("3_hnko8")
+ao_light_affect = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lfj4e"]
+albedo_texture = ExtResource("4_jlkyv")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_jr42q"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_xbdek"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q70gn"]
+resource_local_to_scene = true
+albedo_texture = SubResource("ViewportTexture_jr42q")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_operator = 1
+emission_texture = SubResource("ViewportTexture_xbdek")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rjd0k"]
+albedo_texture = ExtResource("10_thh1q")
+
+[node name="CounterDesktop" type="Node3D"]
+script = ExtResource("1_pbll4")
+
+[node name="ComputerStaticBody" type="StaticBody3D" parent="." groups=["Powerable"]]
+collision_layer = 5
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="ComputerStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00115967, 1.36264, -0.0166016)
+shape = SubResource("BoxShape3D_qchsx")
+
+[node name="SitableStaticBody" type="StaticBody3D" parent="." groups=["Sitable"]]
+collision_layer = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SitableStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0126343, 0.620372, 0.740662)
+shape = SubResource("BoxShape3D_i4q2a")
+
+[node name="DesktopStaticBody" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="DesktopStaticBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396729, 0.880249, 0.728683)
+shape = SubResource("BoxShape3D_xdnrh")
+
+[node name="Computer" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.972106, -0.421836)
+mesh = ExtResource("2_1hje8")
+surface_material_override/0 = SubResource("StandardMaterial3D_xn8i4")
+surface_material_override/1 = SubResource("StandardMaterial3D_lfj4e")
+surface_material_override/2 = SubResource("StandardMaterial3D_q70gn")
+
+[node name="ComputerFanSound" type="AudioStreamPlayer3D" parent="Computer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.291704, 0.220657)
+stream = ExtResource("5_dchor")
+volume_db = -25.946
+pitch_scale = 1.65
+
+[node name="ComputerBeepSound" type="AudioStreamPlayer3D" parent="Computer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.291704, 0.220657)
+stream = ExtResource("6_evutj")
+volume_db = -28.927
+
+[node name="YaySound" type="AudioStreamPlayer3D" parent="Computer"]
+stream = ExtResource("7_aj05u")
+volume_db = -20.791
+
+[node name="PowerSwitchSound" type="AudioStreamPlayer3D" parent="Computer"]
+stream = ExtResource("8_oct2c")
+volume_db = -28.927
+
+[node name="ScreenLight" type="OmniLight3D" parent="Computer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.521458, 0.583355)
+visible = false
+light_energy = 0.1
+light_size = 0.3
+omni_range = 0.579342
+omni_attenuation = 0.1
+
+[node name="Chair" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.980067, 0, 0.198667, 0, 1, 0, -0.198667, 0, 0.980067, 0, 0, 0.757421)
+mesh = ExtResource("9_6ojpo")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_rjd0k")
+
+[node name="SitMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.609959, 0.76911)
+
+[node name="StandMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.593401, 0.916858, 0.807025)
+
+[node name="ScreenMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5071, 0)
+
+[node name="ScreenRenderTexture" parent="." instance=ExtResource("12_mxqcd")]
+
+[connection signal="invalid_command" from="ScreenRenderTexture" to="." method="_on_screen_render_texture_invalid_command"]
+[connection signal="yay" from="ScreenRenderTexture" to="." method="_on_screen_render_texture_yay"]
