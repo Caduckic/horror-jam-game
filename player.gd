@@ -111,25 +111,10 @@ func _physics_process(delta: float) -> void:
 				$PlayerGui._set_label("press e to sit")
 				if Input.is_action_just_pressed("interact"):
 					_interact_sitable()
-					#current_desk = $Head/Camera3D/RayCast3D.get_collider().get_parent()
-					#position = current_desk.get_node("SitMarker").global_position
-					#head.look_at(current_desk.get_node("ScreenMarker").global_position, Vector3.UP)
-					#head.rotation.x = 0
-					#head.rotation.z = 0
-					#
-					##camera.look_at(screenDir, Vector3.LEFT)
-					#camera.rotation = Vector3.ZERO
-					#is_sitting = true;
-					#if current_desk._is_powered_on():
-						#current_desk._grab_focus()
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Powerable"):
 				$PlayerGui._set_label("press e to toggle power")
 				if Input.is_action_just_pressed("interact"):
 					_interact_powerable()
-					#if $Head/Camera3D/RayCast3D.get_collider().get_parent()._is_powered_on():
-						#$Head/Camera3D/RayCast3D.get_collider().get_parent()._turn_off()
-					#else:
-						#$Head/Camera3D/RayCast3D.get_collider().get_parent()._turn_on()
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Drawer"):
 				var drawer = $Head/Camera3D/RayCast3D.get_collider().get_parent()
 				if drawer.is_locked:
@@ -137,16 +122,19 @@ func _physics_process(delta: float) -> void:
 				$PlayerGui._set_label(drawer.message)
 				if Input.is_action_just_pressed("interact"):
 					_interact_drawer(drawer)
-					#if drawer.is_locked and has_key:
-						#drawer._unlock()
-					#else:
-						#drawer._toggle_open()
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Note"):
 				var note = $Head/Camera3D/RayCast3D.get_collider().get_parent()
 				$PlayerGui._set_label("press e to read")
 				if Input.is_action_just_pressed("interact"):
 					$PlayerGui._read_note(note.text)
 					reading_note = true
+			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Key"):
+				if $Head/Camera3D/RayCast3D.get_collider().get_parent().visible:
+					$PlayerGui._set_label("press e to pickup")
+				if Input.is_action_just_pressed("interact"):
+					has_key = true
+					$Head/Camera3D/RayCast3D.get_collider().get_parent().visible = false
+					
 		elif reading_note:
 			$PlayerGui._set_label("press e to drop note")
 			if Input.is_action_just_pressed("interact"):

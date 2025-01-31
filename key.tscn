@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca6qhgtf228oq"]
+
+[ext_resource type="Script" path="res://key.gd" id="1_6l0kx"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pdbqx"]
+size = Vector3(0.103516, 0.0549316, 0.13501)
+
+[node name="Key" type="Node3D"]
+script = ExtResource("1_6l0kx")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+size = Vector3(0.101562, 0.0546875, 0.133789)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." groups=["Key"]]
+collision_layer = 32
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_pdbqx")

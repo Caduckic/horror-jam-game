@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://bbsjpi06nut4a"]
+[gd_scene load_steps=16 format=3 uid="uid://bbsjpi06nut4a"]
 
 [ext_resource type="Script" path="res://level.gd" id="1_j0ej6"]
 [ext_resource type="PackedScene" uid="uid://fomv3layac0v" path="res://floor.tscn" id="1_phx4r"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://ynb3auwdpkbg" path="res://file_drawer.tscn" id="9_2lbr5"]
 [ext_resource type="PackedScene" uid="uid://cs0bjd5bkm402" path="res://file_drawer_locked.tscn" id="10_k8iqm"]
 [ext_resource type="PackedScene" uid="uid://bupbl68fow2sl" path="res://note.tscn" id="11_h1xxy"]
+[ext_resource type="PackedScene" uid="uid://ca6qhgtf228oq" path="res://key.tscn" id="12_86tr2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_kj71f"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -90,5 +91,8 @@ transform = Transform3D(-1.09994, 0, -0.0111733, 0, 1.1, 0, 0.0111733, 0, -1.099
 transform = Transform3D(-1.09994, 0, -0.0111733, 0, 1.1, 0, 0.0111733, 0, -1.09994, 4.6804, 0.485349, -9.36356)
 text = "Password for counter computer is 1234.
 Type in help to the console for list of commands"
+
+[node name="Key" parent="." instance=ExtResource("12_86tr2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.17915, 0.525985, -9.36892)
 
 [editable path="Player"]
