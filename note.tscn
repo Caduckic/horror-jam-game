@@ -1,14 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://bupbl68fow2sl"]
+[gd_scene load_steps=7 format=3 uid="uid://bupbl68fow2sl"]
 
 [ext_resource type="Script" path="res://note.gd" id="1_4ycxv"]
 [ext_resource type="Texture2D" uid="uid://0rbe2c6v6xlo" path="res://textures/Paper Texture_text.jpg" id="1_8yipj"]
+[ext_resource type="Material" uid="uid://csquk4ou4faw1" path="res://outline.material" id="2_x4c7n"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6qctd"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_krdfa"]
 albedo_texture = ExtResource("1_8yipj")
+uv1_scale = Vector3(3, 2, 1)
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_at2wn"]
-material = SubResource("StandardMaterial3D_6qctd")
-size = Vector2(0.3, 0.4)
+[sub_resource type="BoxMesh" id="BoxMesh_fa0na"]
+material = SubResource("StandardMaterial3D_krdfa")
+size = Vector3(0.3, 0.001, 0.4)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uccqk"]
 size = Vector3(0.314453, 0.03125, 0.419922)
@@ -17,7 +19,9 @@ size = Vector3(0.314453, 0.03125, 0.419922)
 script = ExtResource("1_4ycxv")
 
 [node name="Note" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_at2wn")
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+material_overlay = ExtResource("2_x4c7n")
+mesh = SubResource("BoxMesh_fa0na")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." groups=["Note"]]
 collision_layer = 16

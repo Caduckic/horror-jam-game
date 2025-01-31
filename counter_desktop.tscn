@@ -1,7 +1,8 @@
-[gd_scene load_steps=21 format=3 uid="uid://jnry0jvf8nw"]
+[gd_scene load_steps=22 format=3 uid="uid://jnry0jvf8nw"]
 
 [ext_resource type="Script" path="res://desktop.gd" id="1_pbll4"]
 [ext_resource type="ArrayMesh" uid="uid://csh5pxf1730fw" path="res://models/old-computer.obj" id="2_1hje8"]
+[ext_resource type="Material" uid="uid://csquk4ou4faw1" path="res://outline.material" id="2_otkto"]
 [ext_resource type="Texture2D" uid="uid://bwq3c3p0slroo" path="res://models/pc_1X.png" id="3_hnko8"]
 [ext_resource type="Texture2D" uid="uid://wpjeapcinbjl" path="res://models/keyboard_1.png" id="4_jlkyv"]
 [ext_resource type="AudioStream" uid="uid://bbtccqcbfvl2p" path="res://sounds/computer/Office Computer PC Fan Noise Loop.wav" id="5_dchor"]
@@ -71,6 +72,7 @@ shape = SubResource("BoxShape3D_xdnrh")
 
 [node name="Computer" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.972106, -0.421836)
+material_overlay = ExtResource("2_otkto")
 mesh = ExtResource("2_1hje8")
 surface_material_override/0 = SubResource("StandardMaterial3D_xn8i4")
 surface_material_override/1 = SubResource("StandardMaterial3D_lfj4e")
@@ -105,6 +107,7 @@ omni_attenuation = 0.1
 
 [node name="Chair" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.980067, 0, 0.198667, 0, 1, 0, -0.198667, 0, 0.980067, 0, 0, 0.757421)
+material_overlay = ExtResource("2_otkto")
 mesh = ExtResource("9_6ojpo")
 skeleton = NodePath("")
 surface_material_override/0 = SubResource("StandardMaterial3D_rjd0k")

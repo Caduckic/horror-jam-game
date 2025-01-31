@@ -4,5 +4,5 @@
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 use_collision = true
-collision_layer = 17
+collision_layer = 529
 size = Vector3(1, 2.5, 5)

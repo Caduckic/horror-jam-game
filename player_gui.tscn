@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cwga4d221pxvh"]
+[gd_scene load_steps=6 format=3 uid="uid://cwga4d221pxvh"]
 
 [ext_resource type="Script" path="res://player_gui.gd" id="1_e2bxh"]
 [ext_resource type="Texture2D" uid="uid://bhgpue10y6v35" path="res://textures/Paper Texture.jpg" id="2_ppjoy"]
+[ext_resource type="FontFile" uid="uid://beqnytfhgoxcv" path="res://fonts/JustAnotherHand-Regular.ttf" id="3_w0ftk"]
 
 [sub_resource type="Theme" id="Theme_ep2tv"]
 
@@ -59,7 +60,6 @@ theme_override_constants/shadow_outline_size = 7
 text = "press e to sit"
 
 [node name="Note" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -102,7 +102,8 @@ offset_bottom = 449.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
+theme_override_fonts/font = ExtResource("3_w0ftk")
+theme_override_font_sizes/font_size = 80
 text = "Test text"
 autowrap_mode = 2
 

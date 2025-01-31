@@ -42,7 +42,7 @@ albedo_texture = ExtResource("7_sxqw8")
 [node name="CSGBox3D3" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -15)
 use_collision = true
-collision_layer = 17
+collision_layer = 529
 size = Vector3(30, 6, 1)
 material = ExtResource("1_q5aal")
 
@@ -97,6 +97,7 @@ material = ExtResource("2_sarrl")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -1, 0)
 layers = 2
 use_collision = true
+collision_layer = 513
 size = Vector3(40, 1, 30)
 material = ExtResource("2_stnud")
 
@@ -108,12 +109,14 @@ mesh = SubResource("CapsuleMesh_csoph")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.47582, 0)
 layers = 2
 use_collision = true
+collision_layer = 513
 size = Vector3(30, 1, 30)
 material = SubResource("StandardMaterial3D_hnkb1")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, -12.6874, -0.797189, 1.22526)
 use_collision = true
+collision_layer = 513
 size = Vector3(4, 2.22754, 6.29004)
 material = ExtResource("2_stnud")
 
@@ -141,6 +144,7 @@ material = ExtResource("2_stnud")
 [node name="CSGBox3D5" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.44905, 0.279498, -8.41574)
 use_collision = true
+collision_layer = 513
 size = Vector3(5, 1.54207, 0.591797)
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGBox3D5"]

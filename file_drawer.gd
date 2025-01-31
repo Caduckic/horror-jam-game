@@ -5,6 +5,9 @@ var open = false
 
 @export var is_locked = false
 
+@onready var outline = ResourceLoader.load("res://outline.material")
+@onready var fake_mat = Material.new()
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -29,6 +32,16 @@ func _toggle_open():
 			$FilingCabinet_Drawer.position = $ClosedMarker.position
 			$Interaction/OpenCollisionShape.disabled = true
 
+func _high_light_drawer():
+	$FilingCabinetSingle_Case/FilingCabinetSingle_Case.material_overlay = outline
+	$FilingCabinet_Drawer/FilingCabinet_Drawer.material_overlay = outline
+	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+	
+func _physics_process(delta: float) -> void:
+	if ($FilingCabinetSingle_Case/FilingCabinetSingle_Case.material_overlay):
+		$FilingCabinetSingle_Case/FilingCabinetSingle_Case.material_overlay = fake_mat
+		$FilingCabinet_Drawer/FilingCabinet_Drawer.material_overlay = fake_mat

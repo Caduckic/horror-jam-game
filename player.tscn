@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c5xmb32ec6iia"]
+[gd_scene load_steps=9 format=3 uid="uid://c5xmb32ec6iia"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_b8ri2"]
 [ext_resource type="ArrayMesh" uid="uid://dfixebc63ljis" path="res://models/flashlight_2.obj" id="2_cdsb7"]
@@ -12,6 +12,12 @@
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_00dku"]
 albedo_texture = ExtResource("3_6nhtp")
 
+[sub_resource type="SphereMesh" id="SphereMesh_st27i"]
+radius = 0.05
+height = 0.1
+radial_segments = 32
+rings = 16
+
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_b8ri2")
 
@@ -23,6 +29,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90358, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Head"]
 cull_mask = 1048559
+
+[node name="FlashRay" type="RayCast3D" parent="Head/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, -5000, 0)
+collision_mask = 512
 
 [node name="RayCast3D" type="RayCast3D" parent="Head/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
@@ -38,10 +49,10 @@ collision_mask = 16
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.263153, -0.604487, -0.357301)
 
 [node name="HoldMarker" type="Marker3D" parent="Head/Camera3D"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.263153, -0.303946, -0.357301)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.263153, -0.303946, -0.357301)
 
 [node name="LiftMarker" type="Marker3D" parent="Head/Camera3D"]
-transform = Transform3D(-4.37114e-08, 0.965926, 0.258819, 0.965926, 0.0669874, -0.25, -0.258819, 0.25, -0.933013, 0.27137, -0.254102, -0.278837)
+transform = Transform3D(1, 0, 0, 0, 0.410846, -0.911705, 0, 0.911705, 0.410846, 0.27137, -0.254102, -0.278837)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Head"]
 light_energy = 0.01
@@ -59,12 +70,16 @@ pitch_scale = 1.43
 
 [node name="PlayerGui" parent="." instance=ExtResource("2_yqmuw")]
 
-[node name="Flashlight2" type="MeshInstance3D" parent="."]
+[node name="FlashNode" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.90358, 0)
+
+[node name="Flashlight2" type="MeshInstance3D" parent="FlashNode"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
 mesh = ExtResource("2_cdsb7")
+skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_00dku")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="Flashlight2"]
+[node name="SpotLight3D" type="SpotLight3D" parent="FlashNode/Flashlight2"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.195719, 0, 0)
 light_color = Color(0.96984, 0.981259, 0.928001, 1)
 shadow_enabled = true
@@ -77,7 +92,7 @@ distance_fade_length = 5.0
 spot_range = 8.5
 spot_angle = 23.0
 
-[node name="OmniLight3D" type="OmniLight3D" parent="Flashlight2"]
+[node name="OmniLight3D" type="OmniLight3D" parent="FlashNode/Flashlight2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.237873, 0, 0)
 light_size = 0.164
 omni_range = 0.101
@@ -86,5 +101,10 @@ omni_attenuation = 0.298
 [node name="FlashAwayTimer" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
+
+[node name="DebugPoint" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("SphereMesh_st27i")
+skeleton = NodePath("../MeshInstance3D")
 
 [connection signal="timeout" from="FlashAwayTimer" to="." method="_on_flash_away_timer_timeout"]

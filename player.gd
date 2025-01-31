@@ -19,6 +19,11 @@ var current_desk = null
 
 var flash_light_active = false
 var moving_flash = false
+@onready var flash_forward_dir : Vector3 = Vector3(
+	$Head/Camera3D/HoldMarker.global_rotation.x,
+	$Head/Camera3D/HoldMarker.global_rotation.y,
+	$Head/Camera3D/HoldMarker.global_rotation.z
+)
 
 var has_key = false
 
@@ -80,12 +85,16 @@ func _handle_fov(delta: float):
 	var target_fov = BASE_FOV + FOV_CHANGE * velocity_clamped
 	camera.fov = lerp(camera.fov, target_fov, delta * 8.0)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(delta: float) -> void:	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
 	if not is_sitting:
+		if $Head/Camera3D/FlashRay.is_colliding():
+			$DebugPoint.global_position = $Head/Camera3D/FlashRay.get_collision_point()
+		
+		
 		# Handle jump.
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			velocity.y = JUMP_VELOCITY
@@ -109,14 +118,17 @@ func _physics_process(delta: float) -> void:
 		if $Head/Camera3D/RayCast3D.is_colliding() and not reading_note:
 			if $Head/Camera3D/RayCast3D.get_collider().is_in_group("Sitable"):
 				$PlayerGui._set_label("press e to sit")
+				$Head/Camera3D/RayCast3D.get_collider().get_parent()._high_light_chair()
 				if Input.is_action_just_pressed("interact"):
 					_interact_sitable()
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Powerable"):
 				$PlayerGui._set_label("press e to toggle power")
+				$Head/Camera3D/RayCast3D.get_collider().get_parent()._high_light_computer()
 				if Input.is_action_just_pressed("interact"):
 					_interact_powerable()
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Drawer"):
 				var drawer = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+				drawer._high_light_drawer()
 				if drawer.is_locked:
 					drawer._check_key(has_key)
 				$PlayerGui._set_label(drawer.message)
@@ -124,12 +136,14 @@ func _physics_process(delta: float) -> void:
 					_interact_drawer(drawer)
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Note"):
 				var note = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+				note._high_light_note()
 				$PlayerGui._set_label("press e to read")
 				if Input.is_action_just_pressed("interact"):
 					$PlayerGui._read_note(note.text)
 					reading_note = true
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Key"):
 				if $Head/Camera3D/RayCast3D.get_collider().get_parent().visible:
+					$Head/Camera3D/RayCast3D.get_collider().get_parent()._high_light_key()
 					$PlayerGui._set_label("press e to pickup")
 				if Input.is_action_just_pressed("interact"):
 					has_key = true
@@ -145,7 +159,7 @@ func _physics_process(delta: float) -> void:
 			
 		if Input.is_action_just_pressed("open_flash") and not reading_note:
 			if not flash_light_active:
-				$Flashlight2.visible = true
+				$FlashNode.visible = true
 				flash_light_active = true
 			else:
 				flash_light_active = false
@@ -161,18 +175,30 @@ func _physics_process(delta: float) -> void:
 			current_maker = $Head/Camera3D/AwayMarker
 		
 		var thres = 0.01
-		if $Flashlight2.global_position.distance_to(current_maker.global_position) > thres:
-			$Flashlight2.global_position = $Flashlight2.global_position.lerp(current_maker.global_position, 20 * delta)
+		if $FlashNode.global_position.distance_to(current_maker.global_position) > thres:
+			$FlashNode.global_position = $FlashNode.global_position.lerp(current_maker.global_position, 20 * delta)
 
-			$Flashlight2.rotation.x = lerp_angle($Flashlight2.rotation.x, current_maker.global_rotation.x, 20 * delta)
-			$Flashlight2.rotation.y = lerp_angle($Flashlight2.rotation.y, current_maker.global_rotation.y, 20 * delta)
-			$Flashlight2.rotation.z = lerp_angle($Flashlight2.rotation.z, current_maker.global_rotation.z, 20 * delta)
+			if current_maker == $Head/Camera3D/HoldMarker:
+				#$Flashlight2.global_position = collision.position
+				var flash_dir = $FlashNode.global_position - $DebugPoint.global_position
+				var old_rot = $FlashNode.rotation
+				$FlashNode.look_at($DebugPoint.global_position)
+				$FlashNode.rotation.x = lerp_angle(old_rot.x, $FlashNode.rotation.x, 20 * delta)
+				$FlashNode.rotation.y = lerp_angle(old_rot.y, $FlashNode.rotation.y, 20 * delta)
+				$FlashNode.rotation.z = lerp_angle(old_rot.z, $FlashNode.rotation.z, 20 * delta)
+			else:
+				$FlashNode.rotation.x = lerp_angle($FlashNode.rotation.x, current_maker.global_rotation.x, 20 * delta)
+				$FlashNode.rotation.y = lerp_angle($FlashNode.rotation.y, current_maker.global_rotation.y, 20 * delta)
+				$FlashNode.rotation.z = lerp_angle($FlashNode.rotation.z, current_maker.global_rotation.z, 20 * delta)
 	else:
 		$PlayerGui._set_label("press left shift to stand up")
 		if Input.is_action_just_pressed("sprint"):
 			position = current_desk.get_node("StandMarker").global_position
 			is_sitting = false
 			current_desk._release_focus()
+			
+			if flash_light_active:
+				$FlashNode.visible = true
 	
 	if is_on_floor() and not last_on_floor:
 		_play_step_sound()
@@ -191,6 +217,8 @@ func _interact_sitable():
 	is_sitting = true;
 	if current_desk._is_powered_on():
 		current_desk._grab_focus()
+		
+	$FlashNode.visible = false
 
 func _interact_powerable():
 	if $Head/Camera3D/RayCast3D.get_collider().get_parent()._is_powered_on():
@@ -227,4 +255,4 @@ func _play_step_sound():
 
 
 func _on_flash_away_timer_timeout() -> void:
-	$Flashlight2.visible = false
+	$FlashNode.visible = false
