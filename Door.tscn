@@ -1,0 +1,58 @@
+[gd_scene load_steps=6 format=3 uid="uid://bl08cdewv0eot"]
+
+[ext_resource type="Script" path="res://door.gd" id="1_h22ip"]
+[ext_resource type="AudioStream" uid="uid://cwj7664snr2n3" path="res://sounds/door_open.wav" id="2_y61ap"]
+
+[sub_resource type="Animation" id="Animation_spepo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ncryn"]
+resource_name = "door_open"
+length = 1.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.1),
+"transitions": PackedFloat32Array(1.86607, 1.86607),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.65806, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ogjki"]
+_data = {
+"RESET": SubResource("Animation_spepo"),
+"door_open": SubResource("Animation_ncryn")
+}
+
+[node name="Door" type="Node3D"]
+script = ExtResource("1_h22ip")
+
+[node name="DoorMesh" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 0, 0.025)
+use_collision = true
+collision_layer = 513
+size = Vector3(1.7, 2.7, 0.05)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ogjki")
+}
+
+[node name="OpeningSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_y61ap")

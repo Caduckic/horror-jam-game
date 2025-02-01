@@ -13,13 +13,13 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	var all_on = true
+	var all_unlocked = true
 	for desktop in desktops:
 		if not desktop._is_unlocked():
-			all_on = false
+			all_unlocked = false
 			break
 	
-	if all_on:
+	if all_unlocked:
 		print("OOOO SPOOKY")
 		for desktop in desktops:
 			desktop._turn_off()

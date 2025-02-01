@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=4 uid="uid://ca6qhgtf228oq"]
+[gd_scene load_steps=9 format=4 uid="uid://ca6qhgtf228oq"]
 
 [ext_resource type="Script" path="res://key.gd" id="1_6l0kx"]
+[ext_resource type="AudioStream" uid="uid://bmv3cujfif88" path="res://sounds/key/key_pickup.wav" id="2_6lrf1"]
 [ext_resource type="Texture2D" uid="uid://dnfd5kdpn3gnj" path="res://models/PS1_Keys_D.png" id="2_dm1h1"]
 [ext_resource type="Material" uid="uid://csquk4ou4faw1" path="res://outline.material" id="2_jl7oy"]
 
@@ -9,7 +10,6 @@ resource_name = "keys"
 transparency = 4
 cull_mode = 2
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("2_dm1h1")
 emission_enabled = true
 
@@ -52,6 +52,9 @@ size = Vector3(0.103516, 0.0549316, 0.13501)
 
 [node name="Key" type="Node3D"]
 script = ExtResource("1_6l0kx")
+
+[node name="Pickup" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_6lrf1")
 
 [node name="key_lockbox2" type="MeshInstance3D" parent="."]
 transform = Transform3D(-0.0252136, -2.67678, 1.85085e-05, 7.97779e-08, 1.81894e-05, 2.6769, -2.67678, 0.0252133, -3.19112e-07, -1.86265e-09, 0, -0.0727837)

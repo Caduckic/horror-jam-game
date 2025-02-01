@@ -18,6 +18,7 @@ func _check_key(has_key : bool):
 
 func _unlock():
 	is_locked = false
+	$Unlock.play()
 	message = "press e to open"
 
 func _toggle_open():
@@ -25,10 +26,12 @@ func _toggle_open():
 		open = !open
 		if open:
 			message = "press e to close"
+			$Open.play()
 			$FilingCabinet_Drawer.position = $OpenMarker.position
 			$Interaction/OpenCollisionShape.disabled = false
 		else:
 			message = "press e to open"
+			$Close.play()
 			$FilingCabinet_Drawer.position = $ClosedMarker.position
 			$Interaction/OpenCollisionShape.disabled = true
 

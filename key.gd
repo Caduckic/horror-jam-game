@@ -21,3 +21,6 @@ func _physics_process(delta: float) -> void:
 
 func _queue_free():
 	queue_free()
+
+func _play_pickup():
+	$Pickup.play()

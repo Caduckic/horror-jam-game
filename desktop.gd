@@ -1,5 +1,7 @@
 extends Node3D
 
+signal bookcase_crash
+
 @onready var outline = ResourceLoader.load("res://outline.material")
 @onready var fake_mat = Material.new()
 
@@ -73,3 +75,7 @@ func _on_screen_render_texture_invalid_command() -> void:
 
 func _on_screen_render_texture_yay() -> void:
 	$Computer/YaySound.play()
+
+
+func _on_screen_render_texture_bookcase_crash() -> void:
+	bookcase_crash.emit()

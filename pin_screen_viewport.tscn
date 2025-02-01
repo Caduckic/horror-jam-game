@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://cv7bcq53fjfx2"]
+
+[ext_resource type="Script" path="res://pin_screen_viewport.gd" id="1_kit4u"]
+[ext_resource type="FontFile" uid="uid://dql8tgl7gahfp" path="res://fonts/SpaceMono-Regular.ttf" id="1_yjyjm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ftkwy"]
+bg_color = Color(0.0588235, 0.0588235, 0.0588235, 1)
+
+[node name="PinScreenViewport" type="Node2D"]
+script = ExtResource("1_kit4u")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+disable_3d = true
+own_world_3d = true
+handle_input_locally = false
+size = Vector2i(250, 105)
+render_target_update_mode = 4
+
+[node name="Control" type="Control" parent="SubViewportContainer/SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Panel" type="Panel" parent="SubViewportContainer/SubViewport/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ftkwy")
+
+[node name="Label" type="Label" parent="SubViewportContainer/SubViewport/Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 5.87
+offset_top = -73.675
+offset_right = 299.87
+offset_bottom = 69.325
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0.631373, 0, 1)
+theme_override_fonts/font = ExtResource("1_yjyjm")
+theme_override_font_sizes/font_size = 96
+text = "0000"

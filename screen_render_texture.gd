@@ -2,33 +2,40 @@ extends Node2D
 
 signal invalid_command
 signal yay
+signal bookcase_crash
 
 var base_text : String
+var warned = false
 
 var commands : Dictionary = {
 	"clear": "resets the screen",
 	"help": "displays all commands",
 	"ls": "lists all folders/files in current directory",
 	"cd": "changes directory relative to current directory\n\texample: cd data\n\texample backwards: cd ..",
-	"read": "reads and displays contents a file relative to current directory\n\texample: read data.txt"
+	"read": "reads and displays contents a file relative to current directory\n\texample: read data.txt",
+	"run": "executes a given .exe file\n\texample: run program.exe"
 }
 
-var directory_structure : Dictionary = {
+@onready var date = Time.get_date_dict_from_system()
+
+@onready var directory_structure : Dictionary = {
 	"data": {
 		"secret" : {
-			"empty": {},
-			"//fpassword.txt": "1234"
+			"backup": {
+				"//flog.txt": "DATE 1982/07/13: FILE CREATED \"C:/data/secret/password.txt\" BY USER ADMIN\nDATE 2006/04/20: FILE CREATED \"C:/data/IGIVEUP.txt\" BY USER ADMIN\nDATE " + str(date["year"]) + "/" + str(date["month"]) + "/" + str(date["day"]) + ": ADMIN LOGGED IN"
+			},
+			"//fleftpcpassword.txt": "track44"
 		},
-		"//ftest.txt": "test text"
+		"//figiveup.txt": "I've been stuck here for so long, I was just in my house when I suddenly fell through the floor. I don't even know what this place is, I found a room behind one of the bookcases that should keep me safe. But I feel like I'm not alone, I don't know how much longer I can survive."
 	},
-	"empty": {},
-	"//freadme.txt": "Hello World"
+	"trash": {},
+	"//freadme.txt": "PLEASE FILL OUT README"
 }
 
 var current_directory_array = []
 
 var unlocked : bool = false
-var password : String = "1234"
+var password : String = "history59"
 
 var powered_on : bool = false
 
@@ -150,6 +157,34 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 							invalid_command.emit()
 				else:
 					base_text += "\ninvalid use of read\ncorrect usage \"read <file_path>\"\nexample: read data.txt"
+					invalid_command.emit()
+				base_text += "\n"
+			elif command_array[0] == "run":
+				if command_array.size() == 2:
+					if current_directory_array.size() > 0:
+						var current_directory_dict = directory_structure[current_directory_array[0]]
+						for i in range(current_directory_array.size()):
+							if i != 0:
+								current_directory_dict = current_directory_dict[current_directory_array[i]]
+						if "//p" + command_array[1] in current_directory_dict.keys():
+							if not warned:
+								base_text += "\nTHEY'RE WATCHING"
+								warned = true
+								bookcase_crash.emit()
+						else:
+							base_text+= "\ninvalid file path"
+							invalid_command.emit()
+					else:
+						if "//p" + command_array[1] in directory_structure.keys():
+							if not warned:
+								base_text += "\nTHEY'RE WATCHING"
+								warned = true
+								bookcase_crash.emit()
+						else:
+							base_text += "\ninvalid file path"
+							invalid_command.emit()
+				else:
+					base_text += "\ninvalid use of run\ncorrect usage \"run <file_path>\"\nexample: run game.exe"
 					invalid_command.emit()
 				base_text += "\n"
 			else:

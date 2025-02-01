@@ -1,8 +1,21 @@
-[gd_scene format=3 uid="uid://pbhn7rj5qo6m"]
+[gd_scene load_steps=4 format=3 uid="uid://pbhn7rj5qo6m"]
+
+[ext_resource type="ArrayMesh" uid="uid://b7cdobbfqwb1w" path="res://models/Bookshelf_20.obj" id="1_jfh1w"]
+[ext_resource type="Texture2D" uid="uid://bi2bmi2s7emgn" path="res://models/Bookshelves.png" id="2_pi10d"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nnnnu"]
+albedo_texture = ExtResource("2_pi10d")
 
 [node name="BookCase" type="Node3D"]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0241699, 0)
+visible = false
 use_collision = true
-collision_layer = 529
-size = Vector3(1, 2.5, 5)
+collision_layer = 16897
+size = Vector3(0.56543, 2.54834, 4.53906)
+
+[node name="Bookshelf20" type="MeshInstance3D" parent="."]
+transform = Transform3D(-8.74228e-08, 0, 2, 0, 2, 0, -2, 0, -8.74228e-08, 0, -1.25737, 0)
+mesh = ExtResource("1_jfh1w")
+surface_material_override/0 = SubResource("StandardMaterial3D_nnnnu")

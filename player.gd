@@ -3,6 +3,7 @@ extends CharacterBody3D
 var speed
 const WALK_SPEED = 2.0
 const SPRINT_SPEED = 3.0
+const CROUCH_SPEED = 1.0
 const JUMP_VELOCITY = 4.5
 const SENSITIVITY = 0.01
 
@@ -17,6 +18,8 @@ const FOV_CHANGE = 1.5
 var is_sitting = false
 var current_desk = null
 
+var is_crouching = false
+
 var flash_light_active = false
 var moving_flash = false
 @onready var flash_forward_dir : Vector3 = Vector3(
@@ -27,7 +30,15 @@ var moving_flash = false
 
 var has_key = false
 
+var has_wrench = false
+var has_hammer = false
+var has_held_hammer = false
+var is_holding_hammer = false
+var hammer_just_smashed = false
+
 var reading_note = false
+
+var note
 
 var footstep_sounds = [
 	preload("res://sounds/foot_steps/Concrete_Trainers_FullStep_01.wav"),
@@ -100,13 +111,25 @@ func _physics_process(delta: float) -> void:
 			velocity.y = JUMP_VELOCITY
 			_play_step_sound()
 
-		if Input.is_action_pressed("sprint"):
+		if Input.is_action_pressed("sprint") and not is_crouching:
 			speed = SPRINT_SPEED
+		elif is_crouching:
+			speed = CROUCH_SPEED
 		else:
 			speed = WALK_SPEED
 
 		if not reading_note:
 			_walk(delta)
+			
+			if Input.is_action_just_pressed("crouch"):
+				is_crouching = !is_crouching
+				if is_crouching:
+					$AnimationPlayer.play("crouch")
+				elif not is_crouching and not $CrouchCheck.is_colliding():
+					$AnimationPlayer.play_backwards("crouch")
+				else:
+					is_crouching = true
+					
 
 			t_bob += delta * velocity.length() * float(is_on_floor())
 			camera.transform.origin = _headbob(t_bob)
@@ -135,10 +158,11 @@ func _physics_process(delta: float) -> void:
 				if Input.is_action_just_pressed("interact"):
 					_interact_drawer(drawer)
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Note"):
-				var note = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+				note = $Head/Camera3D/RayCast3D.get_collider().get_parent()
 				note._high_light_note()
 				$PlayerGui._set_label("press e to read")
 				if Input.is_action_just_pressed("interact"):
+					note._play_pickup()
 					$PlayerGui._read_note(note.text)
 					reading_note = true
 			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Key"):
@@ -147,18 +171,56 @@ func _physics_process(delta: float) -> void:
 					$PlayerGui._set_label("press e to pickup")
 				if Input.is_action_just_pressed("interact"):
 					has_key = true
+					$Head/Camera3D/RayCast3D.get_collider().get_parent()._play_pickup()
 					$Head/Camera3D/RayCast3D.get_collider().get_parent().visible = false
-					
+			elif  $Head/Camera3D/RayCast3D.get_collider().is_in_group("Button"):
+				var button = $Head/Camera3D/RayCast3D.get_collider()
+				button._highlight()
+				if Input.is_action_just_pressed("interact"):
+					button._press_button()
+			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Wrench"):
+				var wrench = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+				wrench._high_light()
+				$PlayerGui._set_label("press e to pickup")
+				if Input.is_action_just_pressed("interact"):
+					has_wrench = true
+					wrench._play_pickup()
+					wrench.visible = false
+			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Vent"):
+				$Head/Camera3D/RayCast3D.get_collider().get_parent()._highlight()
+				if has_wrench:
+					$PlayerGui._set_label("press e to loosen nuts")
+				else:
+					$PlayerGui._set_label("need to find something to loosen the nuts")
+				if Input.is_action_just_pressed("interact") and has_wrench:
+					$Head/Camera3D/RayCast3D.get_collider().get_parent()._open_vent()
+			elif $Head/Camera3D/RayCast3D.get_collider().is_in_group("Hammer"):
+				var hammer = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+				hammer._high_light()
+				$PlayerGui._set_label("press e to pickup")
+				if Input.is_action_just_pressed("interact"):
+					has_hammer = true
+					hammer._play_pickup()
+					hammer.visible = false
+			if $Head/Camera3D/RayCast3D.get_collider().is_in_group("Breakable"):
+				var breakable = $Head/Camera3D/RayCast3D.get_collider().get_parent()
+				breakable._high_light()
+				if hammer_just_smashed:
+					breakable._break()
 		elif reading_note:
 			$PlayerGui._set_label("press e to drop note")
 			if Input.is_action_just_pressed("interact"):
 				$PlayerGui._close_note()
+				note._play_drop()
 				reading_note = false
 		else:
 			$PlayerGui._set_label("")
+			if has_hammer and not has_held_hammer:
+				$PlayerGui._set_label("press g to equip hammer")
 			
 		if Input.is_action_just_pressed("open_flash") and not reading_note:
 			if not flash_light_active:
+				$FlashOn.play()
 				$FlashNode.visible = true
 				flash_light_active = true
 			else:
@@ -190,6 +252,36 @@ func _physics_process(delta: float) -> void:
 				$FlashNode.rotation.x = lerp_angle($FlashNode.rotation.x, current_maker.global_rotation.x, 20 * delta)
 				$FlashNode.rotation.y = lerp_angle($FlashNode.rotation.y, current_maker.global_rotation.y, 20 * delta)
 				$FlashNode.rotation.z = lerp_angle($FlashNode.rotation.z, current_maker.global_rotation.z, 20 * delta)
+				
+		if Input.is_action_just_pressed("toggle_hammer") and has_hammer and not reading_note:
+			if not is_holding_hammer:
+				#$FlashOn.play()
+				$HammerNode.visible = true
+				is_holding_hammer = true
+				has_held_hammer = true
+				$Head/Camera3D/HoldMarker.position.x = -abs($Head/Camera3D/HoldMarker.position.x)
+				$Head/Camera3D/LiftMarker.position.x = -abs($Head/Camera3D/LiftMarker.position.x)
+			else:
+				is_holding_hammer = false
+				$Head/Camera3D/HoldMarker.position.x = abs($Head/Camera3D/HoldMarker.position.x)
+				$Head/Camera3D/LiftMarker.position.x = abs($Head/Camera3D/LiftMarker.position.x)
+				$HammerAwayTimer.start()
+		
+		var current_hammer_marker
+		if is_holding_hammer:
+			current_hammer_marker = $Head/Camera3D/HammerHoldMarker
+		else:
+			current_hammer_marker = $Head/Camera3D/HammerAwayMarker
+		
+		if $HammerNode.global_position.distance_to(current_hammer_marker.global_position) > thres:
+			$HammerNode.global_position = $HammerNode.global_position.lerp(current_hammer_marker.global_position, 20 * delta)
+			
+			$HammerNode.rotation.x = lerp_angle($HammerNode.rotation.x, current_hammer_marker.global_rotation.x, 20 * delta)
+			$HammerNode.rotation.y = lerp_angle($HammerNode.rotation.y, current_hammer_marker.global_rotation.y, 20 * delta)
+			$HammerNode.rotation.z = lerp_angle($HammerNode.rotation.z, current_hammer_marker.global_rotation.z, 20 * delta)
+			
+		if Input.is_action_just_pressed("smash") and is_holding_hammer:
+			$AnimationPlayer.play("swing_hammer")
 	else:
 		$PlayerGui._set_label("press left shift to stand up")
 		if Input.is_action_just_pressed("sprint"):
@@ -199,11 +291,15 @@ func _physics_process(delta: float) -> void:
 			
 			if flash_light_active:
 				$FlashNode.visible = true
+			if is_holding_hammer:
+				$HammerNode.visible = true
 	
 	if is_on_floor() and not last_on_floor:
 		_play_step_sound()
 	
 	last_on_floor = is_on_floor()
+	
+	hammer_just_smashed = false
 
 func _interact_sitable():
 	current_desk = $Head/Camera3D/RayCast3D.get_collider().get_parent()
@@ -219,6 +315,7 @@ func _interact_sitable():
 		current_desk._grab_focus()
 		
 	$FlashNode.visible = false
+	$HammerNode.visible = false
 
 func _interact_powerable():
 	if $Head/Camera3D/RayCast3D.get_collider().get_parent()._is_powered_on():
@@ -256,3 +353,11 @@ func _play_step_sound():
 
 func _on_flash_away_timer_timeout() -> void:
 	$FlashNode.visible = false
+	$FlashOff.play()
+
+func _hammer_just_smashed():
+	hammer_just_smashed = true
+
+
+func _on_hammer_away_timer_timeout() -> void:
+	$HammerNode.visible = false

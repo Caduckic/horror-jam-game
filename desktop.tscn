@@ -225,5 +225,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5071, 0)
 
 [node name="ScreenRenderTexture" parent="." instance=ExtResource("10_l2c0l")]
 
+[connection signal="bookcase_crash" from="ScreenRenderTexture" to="." method="_on_screen_render_texture_bookcase_crash"]
 [connection signal="invalid_command" from="ScreenRenderTexture" to="." method="_on_screen_render_texture_invalid_command"]
 [connection signal="yay" from="ScreenRenderTexture" to="." method="_on_screen_render_texture_yay"]

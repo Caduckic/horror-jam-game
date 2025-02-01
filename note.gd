@@ -20,3 +20,9 @@ func _physics_process(delta: float) -> void:
 	
 func _high_light_note():
 	$Note.material_overlay = outline
+
+func _play_pickup():
+	$Pickup.play()
+
+func _play_drop():
+	$Drop.play()
