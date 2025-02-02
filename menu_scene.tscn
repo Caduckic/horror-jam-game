@@ -1,0 +1,76 @@
+[gd_scene load_steps=14 format=3 uid="uid://dcrtx0deug81j"]
+
+[ext_resource type="Script" path="res://menu_scene.gd" id="1_5xtea"]
+[ext_resource type="Texture2D" uid="uid://c23ptdanktjno" path="res://textures/1K-carpet_floor_4-diffuse.jpg" id="1_68bko"]
+[ext_resource type="Texture2D" uid="uid://bvtlnifwb14eb" path="res://textures/1K-carpet_floor_4-ao.jpg" id="2_ruc15"]
+[ext_resource type="Texture2D" uid="uid://csseiym18y4j6" path="res://textures/1K-carpet_floor_4-normal.jpg" id="3_wl3f8"]
+[ext_resource type="Script" path="res://spot_light_3d.gd" id="4_bqdaj"]
+[ext_resource type="PackedScene" uid="uid://bcxhg1nirrqyq" path="res://desktop.tscn" id="4_bulf7"]
+[ext_resource type="AudioStream" uid="uid://cg4qs66canc2u" path="res://sounds/light-flicker.wav" id="5_w1xc8"]
+[ext_resource type="PackedScene" uid="uid://dgrq2s80y7kki" path="res://menu_ui.tscn" id="8_hiqjt"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_f1oww"]
+size = Vector2(10, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lujd8"]
+albedo_texture = ExtResource("1_68bko")
+normal_enabled = true
+normal_texture = ExtResource("3_wl3f8")
+ao_enabled = true
+ao_texture = ExtResource("2_ruc15")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2rpfe"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_vyud8"]
+sky_material = SubResource("ProceduralSkyMaterial_2rpfe")
+
+[sub_resource type="Environment" id="Environment_pnxfp"]
+background_mode = 1
+sky = SubResource("Sky_vyud8")
+ambient_light_source = 2
+ambient_light_color = Color(0.147672, 0.147672, 0.147672, 1)
+ambient_light_energy = 0.05
+tonemap_mode = 2
+sdfgi_enabled = true
+glow_enabled = true
+glow_bloom = 0.1
+fog_mode = 1
+fog_density = 1.0
+
+[node name="MenuScene" type="Node3D"]
+script = ExtResource("1_5xtea")
+
+[node name="Desktop" parent="." instance=ExtResource("4_bulf7")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_f1oww")
+surface_material_override/0 = SubResource("StandardMaterial3D_lujd8")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_pnxfp")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(-1, -8.74228e-08, -3.82137e-15, 0, -4.37114e-08, 1, -8.74228e-08, 1, 4.37114e-08, 0, 4.65633, 0)
+layers = 3
+light_color = Color(1, 1, 0.913725, 1)
+shadow_enabled = true
+shadow_bias = 0.07
+spot_range = 9.5
+spot_attenuation = 0.5
+spot_angle = 35.0
+script = ExtResource("4_bqdaj")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="SpotLight3D"]
+stream = ExtResource("5_w1xc8")
+volume_db = -11.531
+pitch_scale = 1.18
+autoplay = true
+bus = &"Flicker"
+playback_type = 1
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.56944, 1.33645, 2.77091)
+
+[node name="MenuUI" parent="." instance=ExtResource("8_hiqjt")]

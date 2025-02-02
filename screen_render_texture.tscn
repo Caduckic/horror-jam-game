@@ -1,6 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://c3poibykmepdb"]
+[gd_scene load_steps=12 format=3 uid="uid://c3poibykmepdb"]
 
 [ext_resource type="Script" path="res://screen_render_texture.gd" id="1_gf5qc"]
+[ext_resource type="Texture2D" uid="uid://boo2j321biotw" path="res://models/mask_mx_5.png" id="2_i1s2r"]
+[ext_resource type="Texture2D" uid="uid://dob5mef55rtyf" path="res://textures/broken_screen.jpg" id="3_yomqg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r2ny5"]
 
@@ -116,6 +118,26 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_kkfgn")
+
+[node name="Mask" type="TextureRect" parent="SubViewportContainer/SubViewport/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_i1s2r")
+
+[node name="BrokenGlass" type="TextureRect" parent="SubViewportContainer/SubViewport/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_yomqg")
 
 [connection signal="text_changed" from="SubViewportContainer/SubViewport/Control/LineEdit" to="." method="_on_line_edit_text_changed"]
 [connection signal="text_submitted" from="SubViewportContainer/SubViewport/Control/LineEdit" to="." method="_on_line_edit_text_submitted"]

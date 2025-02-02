@@ -28,6 +28,8 @@ var moving_flash = false
 	$Head/Camera3D/HoldMarker.global_rotation.z
 )
 
+var has_held_flash = false
+
 var has_key = false
 
 var has_wrench = false
@@ -37,6 +39,10 @@ var is_holding_hammer = false
 var hammer_just_smashed = false
 
 var reading_note = false
+
+var ending = false
+
+var smash_time = false
 
 var note
 
@@ -215,10 +221,15 @@ func _physics_process(delta: float) -> void:
 				reading_note = false
 		else:
 			$PlayerGui._set_label("")
+			if not has_held_flash:
+				$PlayerGui._set_label("press f to equip flashlight")
 			if has_hammer and not has_held_hammer:
 				$PlayerGui._set_label("press g to equip hammer")
+			if smash_time:
+				$PlayerGui._set_label("smash them all!!!")
 			
 		if Input.is_action_just_pressed("open_flash") and not reading_note:
+			has_held_flash = true
 			if not flash_light_active:
 				$FlashOn.play()
 				$FlashNode.visible = true
@@ -361,3 +372,6 @@ func _hammer_just_smashed():
 
 func _on_hammer_away_timer_timeout() -> void:
 	$HammerNode.visible = false
+
+func _end_game():
+	$PlayerGui._play_ending()

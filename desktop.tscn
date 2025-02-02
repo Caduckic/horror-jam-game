@@ -203,6 +203,9 @@ light_size = 0.3
 omni_range = 0.579342
 omni_attenuation = 0.1
 
+[node name="BreakSound" type="AudioStreamPlayer3D" parent="Computer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0160799, 0.525184, 0.410204)
+
 [node name="Table" type="MeshInstance3D" parent="."]
 mesh = SubResource("ArrayMesh_5yqu8")
 surface_material_override/0 = SubResource("StandardMaterial3D_o2l33")

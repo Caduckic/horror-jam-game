@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://cwga4d221pxvh"]
+[gd_scene load_steps=11 format=3 uid="uid://cwga4d221pxvh"]
 
 [ext_resource type="Script" path="res://player_gui.gd" id="1_e2bxh"]
 [ext_resource type="Texture2D" uid="uid://bhgpue10y6v35" path="res://textures/Paper Texture.jpg" id="2_ppjoy"]
 [ext_resource type="FontFile" uid="uid://beqnytfhgoxcv" path="res://fonts/JustAnotherHand-Regular.ttf" id="3_w0ftk"]
+[ext_resource type="FontFile" uid="uid://cruhb4r6t26q8" path="res://fonts/RUSTY ATTACK DEMO Regular.otf" id="4_dej2n"]
 
 [sub_resource type="Theme" id="Theme_ep2tv"]
 
@@ -18,6 +19,84 @@ corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nufts"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="Animation" id="Animation_0iblg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EndingPanel:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EndingText:theme_override_colors/font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_s2otf"]
+resource_name = "end_game"
+length = 8.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("EndingPanel:theme_override_styles/panel:bg_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("EndingText:theme_override_colors/font_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(3, 5.5, 7, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(8.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"return_to_menu"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_qtroe"]
+_data = {
+"RESET": SubResource("Animation_0iblg"),
+"end_game": SubResource("Animation_s2otf")
+}
 
 [node name="PlayerGui" type="Control"]
 layout_mode = 3
@@ -139,3 +218,36 @@ scale = Vector2(0.5, 0.5)
 mouse_filter = 2
 theme = SubResource("Theme_ep2tv")
 theme_override_styles/panel = SubResource("StyleBoxFlat_rkept")
+
+[node name="EndingPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nufts")
+
+[node name="EndingText" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -54.0
+offset_top = -11.5
+offset_right = 54.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0)
+theme_override_fonts/font = ExtResource("4_dej2n")
+theme_override_font_sizes/font_size = 96
+text = "YOU ESCAPED"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_qtroe")
+}

@@ -18,9 +18,10 @@ albedo_texture = ExtResource("3_6nhtp")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0rw4q"]
 resource_name = "hammer_mx_1"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("2_j221j")
-emission_enabled = true
+emission_energy_multiplier = 48.7
+emission_operator = 1
+emission_texture = ExtResource("2_j221j")
 texture_repeat = false
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_8yy3y"]
@@ -61,34 +62,6 @@ height = 0.1
 radial_segments = 32
 rings = 16
 
-[sub_resource type="Animation" id="Animation_fmcce"]
-resource_name = "crouch"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CollisionShape3D:shape:height")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [2.0, 1.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("CollisionShape3D:position:y")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [0.0, 0.5]
-}
-
 [sub_resource type="Animation" id="Animation_n2dw6"]
 length = 0.001
 tracks/0/type = "value"
@@ -128,6 +101,34 @@ tracks/2/keys = {
 "values": [0.0]
 }
 
+[sub_resource type="Animation" id="Animation_fmcce"]
+resource_name = "crouch"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape3D:shape:height")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape3D:position:y")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.5]
+}
+
 [sub_resource type="Animation" id="Animation_xcbyh"]
 resource_name = "swing_hammer"
 tracks/0/type = "value"
@@ -165,6 +166,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody3D"]
+collision_layer = 32769
 script = ExtResource("1_b8ri2")
 
 [node name="CrouchCheck" type="RayCast3D" parent="."]
@@ -232,6 +234,7 @@ visible = false
 
 [node name="Flashlight2" type="MeshInstance3D" parent="FlashNode"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+layers = 524289
 mesh = ExtResource("2_cdsb7")
 skeleton = NodePath("../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_00dku")
@@ -256,10 +259,14 @@ omni_range = 0.101
 omni_attenuation = 0.298
 
 [node name="HammerNode" type="Node3D" parent="."]
-visible = false
 
 [node name="HammerAnimationNode" type="Node3D" parent="HammerNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="HammerNode/HammerAnimationNode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0812992, 0.270366, 0.13987)
+light_energy = 0.3
+omni_range = 0.289411
+omni_attenuation = 0.4
 
 [node name="HammerModel" type="MeshInstance3D" parent="HammerNode/HammerAnimationNode"]
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0, 0)

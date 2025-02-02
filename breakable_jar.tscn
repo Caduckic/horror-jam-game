@@ -1,14 +1,14 @@
-[gd_scene load_steps=23 format=4 uid="uid://bht4s6dxldjvt"]
+[gd_scene load_steps=24 format=4 uid="uid://bht4s6dxldjvt"]
 
 [ext_resource type="Script" path="res://breakable_jar.gd" id="1_a55xl"]
 [ext_resource type="Texture2D" uid="uid://cqav8r2ak1eqj" path="res://models/Base Color_Jar.png" id="1_wduha"]
 [ext_resource type="Material" uid="uid://csquk4ou4faw1" path="res://outline.material" id="2_6f1ux"]
 [ext_resource type="PackedScene" uid="uid://bupbl68fow2sl" path="res://note.tscn" id="3_1e8dq"]
+[ext_resource type="AudioStream" uid="uid://d2ea3to0negty" path="res://sounds/glass/glass_10.wav" id="5_i4mvb"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nmdeb"]
 resource_name = "JarMaterial"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("1_wduha")
 emission_enabled = true
 normal_enabled = true
@@ -54,7 +54,6 @@ points = PackedVector3Array(-5.77271e-05, 0.354427, -0.295651, -5.77271e-05, 0.2
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fipo2"]
 resource_name = "JarMaterial"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("1_wduha")
 emission_enabled = true
 normal_enabled = true
@@ -102,7 +101,6 @@ data = PackedVector3Array(0.186628, 5.01072e-16, 1.14632e-08, 1.20883e-07, -8.15
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12r53"]
 resource_name = "JarMaterial"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("1_wduha")
 emission_enabled = true
 normal_enabled = true
@@ -150,7 +148,6 @@ points = PackedVector3Array(0.271706, 0.0622401, -0.0153775, 0.263871, 0.0003188
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ohiyv"]
 resource_name = "JarMaterial"
 vertex_color_use_as_albedo = true
-albedo_color = Color(1, 1, 1, 1)
 albedo_texture = ExtResource("1_wduha")
 emission_enabled = true
 normal_enabled = true
@@ -201,7 +198,6 @@ transform = Transform3D(1, 0, 0, 0, 1, -4.37114e-08, 0, 4.37114e-08, 1, 0, 0, 0)
 collision_layer = 33
 
 [node name="JarWhole" type="MeshInstance3D" parent="Jar_CollisionMesh"]
-visible = false
 material_overlay = ExtResource("2_6f1ux")
 mesh = SubResource("ArrayMesh_ajdv2")
 skeleton = NodePath("")
@@ -211,6 +207,7 @@ shape = SubResource("ConvexPolygonShape3D_jakfm")
 
 [node name="Pieces" type="Node3D" parent="."]
 process_mode = 4
+visible = false
 
 [node name="Jar_Broken_1" type="Node3D" parent="Pieces"]
 
@@ -233,7 +230,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0037989, -0.000444949, 0.00
 collision_layer = 512
 mass = 0.2
 physics_material_override = SubResource("PhysicsMaterial_e4w3v")
-linear_velocity = Vector3(1, 2, 1)
+linear_velocity = Vector3(2, 4, 2)
 
 [node name="Jar_Broken_2" type="MeshInstance3D" parent="Pieces/Jar_Broken_2/RigidBody3D"]
 mesh = SubResource("ArrayMesh_rrln1")
@@ -250,7 +247,7 @@ transform = Transform3D(1, 0, 0, 0, 1, -4.37114e-08, 0, 4.37114e-08, 1, 0, 0, 0)
 collision_layer = 512
 mass = 0.2
 physics_material_override = SubResource("PhysicsMaterial_egsow")
-linear_velocity = Vector3(-1, 0.2, -1)
+linear_velocity = Vector3(-2, 0.4, -2)
 
 [node name="Jar_Broken_3" type="MeshInstance3D" parent="Pieces/Jar_Broken_3/RigidBody3D"]
 mesh = SubResource("ArrayMesh_4k25f")
@@ -264,3 +261,6 @@ shape = SubResource("ConvexPolygonShape3D_dmgjo")
 [node name="Note" parent="." instance=ExtResource("3_1e8dq")]
 transform = Transform3D(0.102025, 0.605586, -0.789213, -0.0776404, 0.79578, 0.600588, 0.991747, 0, 0.128207, -0.0625344, 0.193635, 0)
 text = "The right password is similar42"
+
+[node name="SmashSound" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("5_i4mvb")

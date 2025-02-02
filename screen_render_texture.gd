@@ -130,12 +130,12 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 							current_directory_dict = current_directory_dict[current_directory_array[i]]
 					base_text += "\n"
 					for entry in current_directory_dict.keys():
-						var text = entry.lstrip("//f")
+						var text = entry.lstrip("//f").lstrip("//p")
 						base_text += text + "\n"
 				else:
 					base_text += "\n"
 					for entry in directory_structure.keys():
-						var text = entry.lstrip("//f")
+						var text = entry.lstrip("//f").lstrip("//p")
 						base_text += text + "\n"
 			elif command_array[0] == "read":
 				if command_array.size() == 2:
@@ -199,6 +199,12 @@ func _on_line_edit_text_submitted(new_text: String) -> void:
 	
 	_set_caret_to_end()
 
+
+func _show_mask():
+	$SubViewportContainer/SubViewport/Control/Mask.visible = true
+	
+func _break():
+	$SubViewportContainer/SubViewport/Control/BrokenGlass.visible = true
 
 func _on_password_input_text_submitted(new_text: String) -> void:
 	$SubViewportContainer/SubViewport/Control/PanelContainer/VBoxContainer/PasswordInput.text = ""

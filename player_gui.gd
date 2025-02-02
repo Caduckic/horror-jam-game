@@ -5,6 +5,7 @@ extends Control
 func _ready() -> void:
 	$Label.visible = false
 	$Note.visible = false
+	$EndingPanel.get_theme_stylebox("panel").bg_color = Color(0.0, 0.0, 0.0, 0.0)
 
 func _read_note(text : String):
 	$Note.visible = true
@@ -20,3 +21,10 @@ func _process(delta: float) -> void:
 func _set_label(text : String) -> void:
 	$Label.visible = true
 	$Label.text = text
+
+func _play_ending():
+	$AnimationPlayer.play("end_game")
+
+func return_to_menu():
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	get_tree().change_scene_to_file("res://menu_scene.tscn")

@@ -24,3 +24,4 @@ func _break():
 	$Jar_CollisionMesh.visible = false
 	$Pieces.visible = true
 	$Pieces.process_mode = Node.PROCESS_MODE_INHERIT
+	$SmashSound.play()

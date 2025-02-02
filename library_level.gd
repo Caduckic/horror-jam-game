@@ -36,12 +36,11 @@ var computer3_password = "similar42"
 	"data": {
 		"secret" : {
 			"empty": {},
-			"//fmiddlecomputerpass.txt": computer2_password
+			"//ftrick.txt": "You can actually get into the vent in the hidden room, someone *ACCIDENTALLY* left an invisible collider :)"
 		},
-		"//fcoolstorybro.txt": "This computer is in a library :)"
 	},
 	"bin": {},
-	"//freadme.txt": "PLACEHOLDER TOPTEXT\n\nBOTTOMTEXT"
+	"//freadme.txt": "Looks like someones trying to skip things, how'd you know this password?"
 }
 
 # Called when the node enters the scene tree for the first time.
@@ -52,6 +51,8 @@ func _ready() -> void:
 	$DesktopContainer/Desktop2._set_directory_structure(computer2_dir_structure)
 	$DesktopContainer/Desktop3._set_password(computer3_password)
 	$DesktopContainer/Desktop3._set_directory_structure(computer3_dir_structure)
+	$TopLightHidden.visible = false
+	$TopLightHidden.process_mode = Node.PROCESS_MODE_DISABLED
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -66,7 +67,23 @@ func _knock_down_bookcase():
 	$OpeningBookcase.global_position = $BookCaseFallMarker.global_position
 	$OpeningBookcase.global_rotation = $BookCaseFallMarker.global_rotation
 	$OpeningBookcase/FallNoise.play()
+	$TopLightHidden.visible = true
+	$TopLightHidden.process_mode = Node.PROCESS_MODE_INHERIT
 
 
 func _on_desktop_2_bookcase_crash() -> void:
 	_knock_down_bookcase()
+
+
+func _on_desktop_container_broken() -> void:
+	$Player.smash_time = false
+	$ExitDoor._open_door()
+
+func _on_exit_marker_body_entered(body: Node3D) -> void:
+	if not $Player.ending:
+		$Player._end_game()
+	$Player.ending = true
+
+
+func _on_desktop_container_unlocked() -> void:
+	$Player.smash_time = true
