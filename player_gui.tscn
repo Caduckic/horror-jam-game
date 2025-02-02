@@ -109,6 +109,7 @@ mouse_filter = 2
 script = ExtResource("1_e2bxh")
 
 [node name="FPS" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_right = 54.0
 offset_bottom = 23.0
